@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ping Pone Trackone</title>
+    </head>
+    <body>
+		
+		<div align="center"><h1>Ping Ponge Trackone</h1>
+			<canvas id="pingPongCanvas" width="820" height="616" style="border:1px solid #000000;">
+		</div>
+		
+        <script>
+
+			var savedX, savedY = 0;
+			var dimensionX = 820;
+			var dimensionY = 616;
+			
+			var dimenstionTableY = 300;
+			var dimenstionTableX = dimenstionTableY*1.8;
+
+			
+            var ws = new WebSocket("ws://127.0.0.1:5678/");
+			
+            ws.onmessage = function (event) {
+				console.log(event.data);
+
+				var c = document.getElementById("pingPongCanvas");
+				var ctx = c.getContext("2d");
+				
+				var x = event.data.split(';')[0];
+				var y = event.data.split(';')[1];
+				
+				//table stuff
+				ctx.fillStyle="navajowhite";
+				ctx.fillRect(0,0,dimensionX,dimensionY);
+				ctx.fillStyle="green";
+				ctx.fillRect((dimensionX-dimenstionTableX)/2,(dimensionY-dimenstionTableY)/2,dimenstionTableX,dimenstionTableY);
+				ctx.fillStyle="black";
+				ctx.fillRect((dimensionX-5)/2,(dimensionY-dimenstionTableY)/2,5,dimenstionTableY);
+				
+				//ball
+				ctx.beginPath();
+				ctx.arc(x,y,10,0,2*Math.PI);
+				ctx.fillStyle="white";
+				ctx.stroke();
+				ctx.fill();
+				
+				//tail
+				ctx.beginPath();
+				ctx.moveTo(savedX,savedY);
+				ctx.lineTo(x,y);
+				ctx.strokeStyle="red";
+				ctx.stroke();
+				
+				savedX=x;
+				savedY=y;
+				
+
+            };
+
+        </script>
+		
+		
+    </body>
+</html>
