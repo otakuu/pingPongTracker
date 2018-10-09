@@ -14,7 +14,7 @@ async def time(websocket, path):
             x = random.randint(0, 410)
         else:
             x = random.randint(410, 820)
-        y = random.randint(0, 616)
+        y = random.randint(100, 500)
         await websocket.send(str(x)+';'+str(y))
         await asyncio.sleep(0.75)
         player+=1
