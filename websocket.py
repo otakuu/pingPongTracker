@@ -1,7 +1,11 @@
+import cv2
+import numpy as np
 import asyncio
 import datetime
 import random
 import websockets
+
+# C:\Users\dalleman\AppData\Local\Programs\Python\Python36-32\python.exe websocket.py
 
 async def time(websocket, path):
     player = 0
@@ -20,3 +24,4 @@ print('websocket started...')
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
+
