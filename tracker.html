@@ -4,10 +4,11 @@
         <title>Ping Pone Trackone</title>
     </head>
     <body>
-		
-		<div align="center"><h1>Ping Ponge Trackone</h1>
+		<div align="center">
+			<font face="verdana"><h1 id="speedId">Ping Pone Trackone</h1></font>
 			<canvas id="pingPongCanvas" width="820" height="616" style="border:1px solid #000000;">
 		</div>
+
 		
         <script>
 
@@ -16,8 +17,9 @@
 			var dimensionY = 616;
 			
 			var dimenstionTableY = 300;
+			var realDimensionTableY = 100;
+			var intervalInMs = 750;
 			var dimenstionTableX = dimenstionTableY*1.8;
-
 			
             var ws = new WebSocket("ws://127.0.0.1:5678/");
 			
@@ -51,6 +53,24 @@
 				ctx.lineTo(x,y);
 				ctx.strokeStyle="red";
 				ctx.stroke();
+				
+				var a = savedX - x;
+				if(a<0)
+					a=a*-1;
+				
+				var b = savedY - y;
+				if(b<0)
+					b=b*-1;
+					
+				var distInCm = Math.sqrt((a*a)+(b*b)) / (dimenstionTableY/realDimensionTableY);
+				console.log(distInCm);
+
+				console.log(distInCm);
+				
+				var speedInCmS =  Math.round(distInCm / (intervalInMs/1000));
+				console.log(speedInCmS);
+				
+				document.getElementById("speedId").innerHTML=speedInCmS+" cm/s";
 				
 				savedX=x;
 				savedY=y;
