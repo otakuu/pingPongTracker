@@ -6,19 +6,19 @@
     <body>
 		<div align="center">
 			<font face="verdana"><h1 id="speedId">Ping Pone Trackone</h1></font>
-			<canvas id="pingPongCanvas" width="820" height="616" style="border:1px solid #000000;">
+			<canvas id="pingPongCanvas" width="640" height="480" style="border:1px solid #000000;">
 		</div>
 
 		
         <script>
 
 			var savedX, savedY = 0;
-			var dimensionX = 820;
-			var dimensionY = 616;
+			var dimensionX = 640;
+			var dimensionY = 480;
 			
 			var dimenstionTableY = 300;
 			var realDimensionTableY = 100;
-			var intervalInMs = 750;
+			var intervalInMs = 250;
 			var dimenstionTableX = dimenstionTableY*1.8;
 			
             var ws = new WebSocket("ws://127.0.0.1:5678/");
@@ -63,12 +63,12 @@
 					b=b*-1;
 					
 				var distInCm = Math.sqrt((a*a)+(b*b)) / (dimenstionTableY/realDimensionTableY);
-				console.log(distInCm);
+				//console.log(distInCm);
 
-				console.log(distInCm);
+				//console.log(distInCm);
 				
 				var speedInCmS =  Math.round(distInCm / (intervalInMs/1000));
-				console.log(speedInCmS);
+				//console.log(speedInCmS);
 				
 				document.getElementById("speedId").innerHTML=speedInCmS+" cm/s";
 				
