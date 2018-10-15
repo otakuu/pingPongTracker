@@ -6,22 +6,25 @@
     <body>
 		<div align="center">
 			<font face="verdana"><h1 id="speedId">Ping Pone Trackone</h1></font>
-			<canvas id="pingPongCanvas" width="640" height="480" style="border:1px solid #000000;">
+			<canvas id="pingPongCanvas" width="500" height="380" style="border:1px solid #000000;">
 		</div>
 
 		
         <script>
 
 			var savedX, savedY = 0;
-			var dimensionX = 640;
-			var dimensionY = 480;
+			var dimensionX = 500;
+			var dimensionY = 380;
 			
-			var dimenstionTableY = 300;
+			var dimenstionTableY = 270;
 			var realDimensionTableY = 100;
 			var intervalInMs = 250;
 			var dimenstionTableX = dimenstionTableY*1.8;
 			
-            var ws = new WebSocket("ws://127.0.0.1:5678/");
+			drawTable();
+
+			
+            var ws = new WebSocket("ws://10.0.1.44:5678/");
 			
             ws.onmessage = function (event) {
 				console.log(event.data);
@@ -32,17 +35,11 @@
 				var x = event.data.split(';')[0];
 				var y = event.data.split(';')[1];
 				
-				//table stuff
-				ctx.fillStyle="navajowhite";
-				ctx.fillRect(0,0,dimensionX,dimensionY);
-				ctx.fillStyle="green";
-				ctx.fillRect((dimensionX-dimenstionTableX)/2,(dimensionY-dimenstionTableY)/2,dimenstionTableX,dimenstionTableY);
-				ctx.fillStyle="black";
-				ctx.fillRect((dimensionX-5)/2,(dimensionY-dimenstionTableY)/2,5,dimenstionTableY);
+				drawTable();
 				
 				//ball
 				ctx.beginPath();
-				ctx.arc(x,y,10,0,2*Math.PI);
+				ctx.arc(x,y,5,0,2*Math.PI);
 				ctx.fillStyle="white";
 				ctx.stroke();
 				ctx.fill();
@@ -54,29 +51,41 @@
 				ctx.strokeStyle="red";
 				ctx.stroke();
 				
-				var a = savedX - x;
-				if(a<0)
-					a=a*-1;
+				//var a = savedX - x;
+				//if(a<0)
+				//	a=a*-1;
 				
-				var b = savedY - y;
-				if(b<0)
-					b=b*-1;
+				//var b = savedY - y;
+				//if(b<0)
+				//	b=b*-1;
 					
-				var distInCm = Math.sqrt((a*a)+(b*b)) / (dimenstionTableY/realDimensionTableY);
+				//var distInCm = Math.sqrt((a*a)+(b*b)) / (dimenstionTableY/realDimensionTableY);
 				//console.log(distInCm);
 
 				//console.log(distInCm);
 				
-				var speedInCmS =  Math.round(distInCm / (intervalInMs/1000));
+				//var speedInCmS =  Math.round(distInCm / (intervalInMs/1000));
 				//console.log(speedInCmS);
 				
-				document.getElementById("speedId").innerHTML=speedInCmS+" cm/s";
+				//document.getElementById("speedId").innerHTML=speedInCmS+" cm/s";
 				
 				savedX=x;
 				savedY=y;
 				
 
             };
+            
+            function drawTable(){
+                //table stuff
+                var c = document.getElementById("pingPongCanvas");
+		var ctx = c.getContext("2d");
+                ctx.fillStyle="navajowhite";
+                ctx.fillRect(0,0,dimensionX,dimensionY);
+		ctx.fillStyle="green";
+		ctx.fillRect((dimensionX-dimenstionTableX)/2,(dimensionY-dimenstionTableY)/2,dimenstionTableX,dimenstionTableY);
+		ctx.fillStyle="black";
+		ctx.fillRect((dimensionX-5)/2,(dimensionY-dimenstionTableY)/2,5,dimenstionTableY);    
+            }
 
         </script>
 		

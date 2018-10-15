@@ -11,14 +11,14 @@ kernel = np.ones((5,5),np.uint8)
 cap = cv2.VideoCapture(0)
 print(str(cap.get(3))+' x '+str(cap.get(4)))
 
-hmn = 95
-hmx = 115
+hmn = 11
+hmx = 135
 
-smn = 17
-smx = 139
+smn = 18
+smx = 66
 
-vmn = 152
-vmx = 255
+vmn = 56
+vmx = 110
 
 async def time(websocket, path):
     print('connected')
@@ -44,7 +44,7 @@ async def time(websocket, path):
         closing = cv2.GaussianBlur(closing,(5,5),0)
 
         # Detect circles using HoughCircles 100/50
-        circles = cv2.HoughCircles(closing,cv2.HOUGH_GRADIENT,2,120,param1=70,param2=40,minRadius=10,maxRadius=20)
+        circles = cv2.HoughCircles(closing,cv2.HOUGH_GRADIENT,2,120,param1=70,param2=40,minRadius=5,maxRadius=10)
 
         x = 0
         y = 0
@@ -58,11 +58,11 @@ async def time(websocket, path):
                     cv2.circle(frame,(int(round(i[0])),int(round(i[1]))),2,(0,255,0),5)
         
         if(x>0 and y>0):
-            print('x: '+str(x))
-            print('y: '+str(y))
+            #print('x: '+str(x))
+            #print('y: '+str(y))
             await websocket.send(str(x)+';'+str(y))
             
-        await asyncio.sleep(0.25)
+        #await asyncio.sleep(0.1)
 				
 start_server = websockets.serve(time, '10.0.1.44', 5678)
 print('websocket started...')
