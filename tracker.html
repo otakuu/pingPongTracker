@@ -4,10 +4,20 @@
         <title>Ping Pone Trackone</title>
     </head>
     <body>
-		<div align="center">
-			<font face="verdana"><h1 id="speedId">Ping Pone Trackone</h1></font>
-			<canvas id="pingPongCanvas" width="500" height="380" style="border:1px solid #000000;">
-		</div>
+	<div align="center">
+	<table><tr>
+	
+	<td><div id="alert1" style="transform: rotate(270deg);"><h1>NET!</h1></div></td>
+	
+		<td>	
+		<canvas id="pingPongCanvas" width="500" height="380" style="border:1px solid #000000;">
+		</td>
+		
+	<td><div id="alert2" style="transform: rotate(90deg);"><h1>NET!</h1></div></td>
+	
+	</tr>
+		
+		</table> </div>
 
 		
         <script>
@@ -18,10 +28,15 @@
 			
 			var dimenstionTableY = 270;
 			var realDimensionTableY = 100;
-			var intervalInMs = 250;
+			var netWidth = 20;
 			var dimenstionTableX = dimenstionTableY*1.8;
 			
 			drawTable();
+			
+			document.getElementById("alert1").style.display = "none";
+			document.getElementById("alert2").style.display = "none";
+			
+			netAlarm();
 
 			
             var ws = new WebSocket("ws://10.0.1.44:5678/");
@@ -37,6 +52,11 @@
 				
 				drawTable();
 				
+				//net alert
+				if((dimensionX/2)-(netWidth/2)>x && (dimensionX/2)+(netWidth/2)<x){
+					netAlert();
+				}
+				
 				//ball
 				ctx.beginPath();
 				ctx.arc(x,y,5,0,2*Math.PI);
@@ -51,41 +71,45 @@
 				ctx.strokeStyle="red";
 				ctx.stroke();
 				
-				//var a = savedX - x;
-				//if(a<0)
-				//	a=a*-1;
-				
-				//var b = savedY - y;
-				//if(b<0)
-				//	b=b*-1;
-					
-				//var distInCm = Math.sqrt((a*a)+(b*b)) / (dimenstionTableY/realDimensionTableY);
-				//console.log(distInCm);
-
-				//console.log(distInCm);
-				
-				//var speedInCmS =  Math.round(distInCm / (intervalInMs/1000));
-				//console.log(speedInCmS);
-				
-				//document.getElementById("speedId").innerHTML=speedInCmS+" cm/s";
-				
 				savedX=x;
 				savedY=y;
-				
 
             };
             
             function drawTable(){
+			
                 //table stuff
                 var c = document.getElementById("pingPongCanvas");
-		var ctx = c.getContext("2d");
+				var ctx = c.getContext("2d");
                 ctx.fillStyle="navajowhite";
                 ctx.fillRect(0,0,dimensionX,dimensionY);
-		ctx.fillStyle="green";
-		ctx.fillRect((dimensionX-dimenstionTableX)/2,(dimensionY-dimenstionTableY)/2,dimenstionTableX,dimenstionTableY);
-		ctx.fillStyle="black";
-		ctx.fillRect((dimensionX-5)/2,(dimensionY-dimenstionTableY)/2,5,dimenstionTableY);    
+				ctx.fillStyle="green";
+				ctx.fillRect((dimensionX-dimenstionTableX)/2,(dimensionY-dimenstionTableY)/2,dimenstionTableX,dimenstionTableY);
+				//alert
+				ctx.fillStyle="red";
+				ctx.fillRect((dimensionX/2)-(netWidth/2), 55, 20, dimenstionTableY);
+				//net
+				ctx.fillStyle="black";
+				ctx.fillRect((dimensionX-5)/2,(dimensionY-dimenstionTableY)/2,5,dimenstionTableY);    	
             }
+			
+			async function netAlarm(){
+			
+				document.body.style.backgroundColor = "red";
+				document.getElementById("alert1").style.display = "";
+				document.getElementById("alert2").style.display = "";
+				
+				await sleep(2000);
+				
+				document.body.style.backgroundColor = "white";
+				document.getElementById("alert1").style.display = "none";
+				document.getElementById("alert2").style.display = "none";
+
+			}
+			
+			function sleep(milliseconds) {
+				return new Promise(resolve => setTimeout(resolve, milliseconds));
+			}
 
         </script>
 		
